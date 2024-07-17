@@ -1,8 +1,7 @@
-"use client"
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import Autoplay from "embla-carousel-autoplay";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -10,20 +9,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../ui/carousel";
+import { HeroSliderProps } from "@/types/movies";
 
-const getPopularMovies = async () => {
-  const res = await fetch(
-    `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&page=1`
-  );
-  const data = await res.json();
-  return data;
-};
-
-const HeroSlider = async () => {
-  const data = await getPopularMovies();
-  const top5Movies = data.results.slice(0, 5);
-  const imageURL = "https://image.tmdb.org/t/p/original/";
-
+const HeroSlider: React.FC<HeroSliderProps> = ({ top5Movies, imageURL }) => {
   return (
     <section className="max-w-full w-full h-screen overflow-hidden">
       <Carousel
@@ -47,7 +35,7 @@ const HeroSlider = async () => {
               <div className="relative w-full h-full group transition-all">
                 <div className="w-full h-full">
                   <Image
-                    alt="test"
+                    alt={data.title}
                     width={1000}
                     height={600}
                     src={imageURL + data.backdrop_path}
@@ -57,7 +45,7 @@ const HeroSlider = async () => {
                 </div>
                 <div className="absolute bottom-8 left-14 w-full max-w-md px-3">
                   <h2 className="font-bold text-2xl lg:text-4xl text-white drop-shadow-2xl">
-                    {data?.title || data?.name}
+                    {data?.title}
                   </h2>
                   <p className="text-ellipsis line-clamp-3 my-2 text-white">
                     {data.overview}
@@ -67,7 +55,7 @@ const HeroSlider = async () => {
                     <span>|</span>
                     <p>View: {Number(data.popularity).toFixed(0)}</p>
                   </div>
-                  <Link href={"/" + data?.media_type + "/" + data.id}>
+                  <Link href={"/"}>
                     <button className="bg-white px-4 py-2 text-black font-bold rounded mt-4 hover:bg-gradient-to-l from-red-700 to-orange-500 shadow-md transition-all hover:scale-105">
                       Play Now
                     </button>

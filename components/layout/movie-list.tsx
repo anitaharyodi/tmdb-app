@@ -4,9 +4,20 @@ import Image from "next/image";
 import Link from "next/link";
 import moment from "moment";
 import { Card, CardContent, CardTitle } from "../ui/card";
+import { MovieListProps } from "@/types/movies";
+import { Heart } from "lucide-react";
 
-const MovieList = ({ title, movies, imageURL }) => {
-  const [visibleMovies, setVisibleMovies] = useState(12); // State to manage visible movies
+const MovieList: React.FC<MovieListProps> = ({ title, movies, imageURL }) => {
+  const [favoriteMovies, setFavoriteMovies] = useState<boolean[]>(movies.map(() => false));
+
+  const toggleFavorite = (index: number) => {
+    const newFavoriteMovies = [...favoriteMovies];
+    newFavoriteMovies[index] = !newFavoriteMovies[index];
+    setFavoriteMovies(newFavoriteMovies);
+    localStorage.setItem("favoriteMovies", JSON.stringify(newFavoriteMovies));
+  };
+
+  const [visibleMovies, setVisibleMovies] = useState(12);
 
   const showMoreMovies = () => {
     setVisibleMovies((prevVisibleMovies) =>
@@ -19,8 +30,8 @@ const MovieList = ({ title, movies, imageURL }) => {
       <h2 className="text-2xl font-bold mb-1">{title}</h2>
       <div className="border-2 border-red-700 w-56 mb-8" />
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {movies.slice(0, visibleMovies).map((movie) => (
-          <Card key={movie.id} className="h-80">
+        {movies.slice(0, visibleMovies).map((movie, index) => (
+          <Card key={movie.id} className="h-80 relative">
             <Link href={`/movie/${movie.id}`} className="flex flex-col h-full">
               <Image
                 src={imageURL + movie.poster_path}
@@ -37,6 +48,16 @@ const MovieList = ({ title, movies, imageURL }) => {
                 <p className="text-xs text-gray-300">Rating: {movie.vote_average}</p>
               </CardContent>
             </Link>
+            <button
+              onClick={() => toggleFavorite(index)}
+              className="absolute bottom-2 right-2 focus:outline-none"
+            >
+              {favoriteMovies[index] ? (
+                <Heart size={20} color="#FF0000" fill="#FF0000"/>
+              ) : (
+                <Heart size={20} color="#FF0000" />
+              )}
+            </button>
           </Card>
         ))}
       </div>
