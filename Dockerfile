@@ -12,7 +12,7 @@ COPY package*.json ./
 RUN npm install
 
 ARG NEXT_PUBLIC_TMDB_API_KEY
-ENV NEXT_PUBLIC_TMDB_API_KEY = $NEXT_PUBLIC_TMDB_API_KEY
+ENV NEXT_PUBLIC_TMDB_API_KEY=$NEXT_PUBLIC_TMDB_API_KEY
 
 #copy the rest of the application code
 COPY . .
