@@ -16,7 +16,7 @@ ENV NEXT_PUBLIC_TMDB_API_KEY=$NEXT_PUBLIC_TMDB_API_KEY
 
 #copy the rest of the application code
 COPY . .
-RUN npm build
+RUN npm run build
 #start app
 EXPOSE 3000
 CMD ["npm", "run", "start"]
