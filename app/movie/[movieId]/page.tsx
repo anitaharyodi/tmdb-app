@@ -16,21 +16,21 @@ type Props = {
   };
 };
 
-export async function generateMetamovie({
-  params,
-}: {
-  params: {
-    movieId: string;
-  };
-}) {
-  const movie = await fetchMovieById(params.movieId);
+// export async function generateMetamovie({
+//   params,
+// }: {
+//   params: {
+//     movieId: string;
+//   };
+// }) {
+//   const movie = await fetchMovieById(params.movieId);
 
-  return {
-    title: movie.title,
-    description: movie.overview,
-    keywords: movie.genres.map((genre) => genre.name).join(", "),
-  } as Metadata;
-}
+//   return {
+//     title: movie.title,
+//     description: movie.overview,
+//     keywords: movie.genres.map((genre) => genre.name).join(", "),
+//   } as Metadata;
+// }
 
 const DetailMovie = async ({ params, searchParams }: Props) => {
   const { movieId } = params;
